@@ -16,6 +16,7 @@ import { addReview, getReviews } from "@/store/shop/review-slice";
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
+  const [isReadMore, setIsReadMore] = useState(true);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -24,8 +25,6 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const { toast } = useToast();
 
   function handleRatingChange(getRating) {
-    console.log(getRating, "getRating");
-
     setRating(getRating);
   }
 
@@ -106,7 +105,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
-      <DialogContent className="grid grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">
+      <DialogContent className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 sm:p-6 lg:p-8 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">
         <div className="relative overflow-hidden rounded-lg">
           <img
             src={productDetails?.image}
@@ -116,26 +115,34 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             className="aspect-square w-full object-cover"
           />
         </div>
-        <div className="">
-          <div>
-            <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
-            <p className="text-muted-foreground text-2xl mb-5 mt-4">
-              {productDetails?.description}
-            </p>
-          </div>
-          <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold">
+            {productDetails?.title}
+          </h1>
+          <p className="text-muted-foreground text-lg sm:text-xl mt-4">
+            {isReadMore
+              ? productDetails?.description.slice(0, 100) + "..."
+              : productDetails?.description}
+            <button
+              onClick={() => setIsReadMore(!isReadMore)}
+              className="text-primary font-semibold ml-2"
+            >
+              {isReadMore ? "Read More" : "Show Less"}
+            </button>
+          </p>
+          <div className="flex items-center justify-between mt-4">
             <p
-              className={`text-3xl font-bold text-primary ${
+              className={`text-2xl font-bold text-primary ${
                 productDetails?.salePrice > 0 ? "line-through" : ""
               }`}
             >
               ${productDetails?.price}
             </p>
-            {productDetails?.salePrice > 0 ? (
+            {productDetails?.salePrice > 0 && (
               <p className="text-2xl font-bold text-muted-foreground">
                 ${productDetails?.salePrice}
               </p>
-            ) : null}
+            )}
           </div>
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center gap-0.5">
@@ -166,7 +173,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           </div>
           <Separator />
           <div className="max-h-[300px] overflow-auto">
-            <h2 className="text-xl font-bold mb-4">Reviews</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-4">Reviews</h2>
             <div className="grid gap-6">
               {reviews && reviews.length > 0 ? (
                 reviews.map((reviewItem) => (
