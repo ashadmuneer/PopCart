@@ -109,128 +109,130 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
-      <DialogContent className="max-w-[90vw] sm:max-w-[80vw] lg:max-w-[60vw] mx-auto p-4 sm:p-6 lg:p-8 rounded-lg bg-white shadow-lg">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="relative overflow-hidden rounded-lg">
-            <img
-              src={productDetails?.image}
-              alt={productDetails?.title}
-              width={600}
-              height={600}
-              className="aspect-square w-full object-cover"
-            />
-          </div>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold">
-              {productDetails?.title}
-            </h1>
-            <p className="text-muted-foreground text-lg sm:text-xl mt-4">
-              {isReadMore
-                ? productDetails?.description.slice(0, 100) + "..."
-                : productDetails?.description}
-              <button
-                onClick={() => setIsReadMore(!isReadMore)}
-                className="text-primary font-semibold ml-2"
-              >
-                {isReadMore ? "Read More" : "Show Less"}
-              </button>
+  <DialogContent className="max-w-[90vw] sm:max-w-[80vw] lg:max-w-[60vw] mx-auto p-4 sm:p-6 lg:p-8 rounded-lg bg-white shadow-lg">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-h-[80vh] overflow-hidden">
+      <div className="relative overflow-hidden rounded-lg">
+        <img
+          src={productDetails?.image}
+          alt={productDetails?.title}
+          width={600}
+          height={600}
+          className="aspect-square w-full object-contain"
+        />
+      </div>
+      <div className="flex flex-col overflow-auto max-h-[75vh] sm:max-h-[300px]">
+        <h1 className="text-2xl sm:text-3xl font-extrabold">
+          {productDetails?.title}
+        </h1>
+        <p className="text-muted-foreground text-lg sm:text-xl mt-4">
+          {isReadMore
+            ? productDetails?.description.slice(0, 100) + "..."
+            : productDetails?.description}
+          <button
+            onClick={() => setIsReadMore(!isReadMore)}
+            className="text-primary font-semibold ml-2"
+          >
+            {isReadMore ? "Read More" : "Show Less"}
+          </button>
+        </p>
+        <div className="flex items-center justify-between mt-4">
+          <p
+            className={`text-2xl font-bold text-primary ${
+              productDetails?.salePrice > 0 ? "line-through" : ""
+            }`}
+          >
+            ${productDetails?.price}
+          </p>
+          {productDetails?.salePrice > 0 && (
+            <p className="text-2xl font-bold text-muted-foreground">
+              ${productDetails?.salePrice}
             </p>
-            <div className="flex items-center justify-between mt-4">
-              <p
-                className={`text-2xl font-bold text-primary ${
-                  productDetails?.salePrice > 0 ? "line-through" : ""
-                }`}
-              >
-                ${productDetails?.price}
-              </p>
-              {productDetails?.salePrice > 0 && (
-                <p className="text-2xl font-bold text-muted-foreground">
-                  ${productDetails?.salePrice}
-                </p>
-              )}
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex items-center gap-0.5">
-                <StarRatingComponent rating={averageReview} />
-              </div>
-              <span className="text-muted-foreground">
-                ({averageReview.toFixed(2)})
-              </span>
-            </div>
-            <div className="mt-5 mb-5">
-              {productDetails?.totalStock === 0 ? (
-                <Button className="w-full opacity-60 cursor-not-allowed">
-                  Out of Stock
-                </Button>
-              ) : (
-                <Button
-                  className="w-full"
-                  onClick={() =>
-                    handleAddToCart(
-                      productDetails?._id,
-                      productDetails?.totalStock
-                    )
-                  }
-                >
-                  Add to Cart
-                </Button>
-              )}
-            </div>
-            <Separator />
-            <div className="max-h-[300px] overflow-auto">
-              <h2 className="text-lg sm:text-xl font-bold mb-4">Reviews</h2>
-              <div className="grid gap-6">
-                {reviews && reviews.length > 0 ? (
-                  reviews.map((reviewItem) => (
-                    <div className="flex gap-4" key={reviewItem._id}>
-                      <Avatar className="w-10 h-10 border">
-                        <AvatarFallback>
-                          {reviewItem?.userName[0].toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="grid gap-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-bold">{reviewItem?.userName}</h3>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          <StarRatingComponent rating={reviewItem?.reviewValue} />
-                        </div>
-                        <p className="text-muted-foreground">
-                          {reviewItem.reviewMessage}
-                        </p>
-                      </div>
+          )}
+        </div>
+        <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-0.5">
+            <StarRatingComponent rating={averageReview} />
+          </div>
+          <span className="text-muted-foreground">
+            ({averageReview.toFixed(2)})
+          </span>
+        </div>
+        <div className="mt-5 mb-5">
+          {productDetails?.totalStock === 0 ? (
+            <Button className="w-full opacity-60 cursor-not-allowed">
+              Out of Stock
+            </Button>
+          ) : (
+            <Button
+              className="w-full"
+              onClick={() =>
+                handleAddToCart(
+                  productDetails?._id,
+                  productDetails?.totalStock
+                )
+              }
+            >
+              Add to Cart
+            </Button>
+          )}
+        </div>
+        <Separator />
+        <div className="flex-1 ">
+          <h2 className="text-lg sm:text-xl font-bold mb-4">Reviews</h2>
+          <div className="grid gap-6">
+            {reviews && reviews.length > 0 ? (
+              reviews.map((reviewItem) => (
+                <div className="flex gap-4" key={reviewItem._id}>
+                  <Avatar className="w-10 h-10 border">
+                    <AvatarFallback>
+                      {reviewItem?.userName[0].toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid gap-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-bold">{reviewItem?.userName}</h3>
                     </div>
-                  ))
-                ) : (
-                  <h1>No Reviews</h1>
-                )}
-              </div>
-              <div className="mt-10 flex-col flex gap-2">
-                <Label>Write a review</Label>
-                <div className="flex gap-1">
-                  <StarRatingComponent
-                    rating={rating}
-                    handleRatingChange={handleRatingChange}
-                  />
+                    <div className="flex items-center gap-0.5">
+                      <StarRatingComponent rating={reviewItem?.reviewValue} />
+                    </div>
+                    <p className="text-muted-foreground">
+                      {reviewItem.reviewMessage}
+                    </p>
+                  </div>
                 </div>
-                <Input
-                  name="reviewMsg"
-                  value={reviewMsg}
-                  onChange={(event) => setReviewMsg(event.target.value)}
-                  placeholder="Write a review..."
-                />
-                <Button
-                  onClick={handleAddReview}
-                  disabled={reviewMsg.trim() === ""}
-                >
-                  Submit
-                </Button>
-              </div>
+              ))
+            ) : (
+              <h1>No Reviews</h1>
+            )}
+          </div>
+          <div className="mt-10 flex-col flex gap-2">
+            <Label>Write a review</Label>
+            <div className="flex gap-1">
+              <StarRatingComponent
+                rating={rating}
+                handleRatingChange={handleRatingChange}
+              />
             </div>
+            <Input
+              name="reviewMsg"
+              value={reviewMsg}
+              onChange={(event) => setReviewMsg(event.target.value)}
+              placeholder="Write a review..."
+            />
+            <Button
+              onClick={handleAddReview}
+              disabled={reviewMsg.trim() === ""}
+            >
+              Submit
+            </Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
+  </DialogContent>
+</Dialog>
+
+
   );
 }
 
