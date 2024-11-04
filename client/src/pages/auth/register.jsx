@@ -39,8 +39,13 @@ function AuthRegister() {
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
+      
+      
       <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+      <h1 className="text-5xl font-bold tracking-tight text-foreground">
+        Welcome to PopCart
+      </h1>
+        <h1 className="text-3xl mt-2 font-bold tracking-tight text-foreground">
           Create new account
         </h1>
         <p className="mt-2">

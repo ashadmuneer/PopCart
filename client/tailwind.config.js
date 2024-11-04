@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'auth-background': "url('https://res.cloudinary.com/dkvp2mun2/image/upload/v1730738406/1000_F_84728074_v6mxHYLCMXduBZvX1I8DqNuMIDu8H4g2_dcwbat.jpg')", // Add your image path here
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
