@@ -88,6 +88,12 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           title: "Review added successfully!",
         });
       }
+      else {
+        toast({
+          title: "You need to purchase the product to review it.",
+          variant: "destructive",
+        });
+      }
     });
   }
 
